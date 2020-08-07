@@ -13,6 +13,7 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const flash = require('express-flash');
 const session = require('express-session');
+const methodOverride = require('method-override');
 
 const initializePassport = require('./passport-config');
 initializePassport(
@@ -45,6 +46,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(methodOverride('_method'));
 
 /**
  * Server Routes
@@ -56,6 +58,7 @@ app.get('/', checkAuthenticated, (req, res) => {
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('login.ejs');
 });
+
 app.post(
   '/login',
   checkNotAuthenticated,
@@ -65,9 +68,11 @@ app.post(
     failureFlash: true,
   })
 );
+
 app.get('/register', checkNotAuthenticated, (req, res) => {
   res.render('register.ejs');
 });
+
 app.post('/register', checkNotAuthenticated, async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -83,6 +88,11 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
   }
 
   console.log(users);
+});
+
+app.delete('/logout', (req, res) => {
+  req.logOut();
+  res.redirect('/login');
 });
 
 function checkAuthenticated(req, res, next) {
