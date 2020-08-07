@@ -29,3 +29,8 @@ SESSION_SECRET = somesecret;
 ```bash
 npm run devStart
 ```
+
+Notes
+
+1. App does not have a persistent way to store users.
+2. Every time you refresh the server, you need to create a new user.
