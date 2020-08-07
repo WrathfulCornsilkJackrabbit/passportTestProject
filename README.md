@@ -18,6 +18,12 @@ create a `.env` file at the root of the project
 touch .env
 ```
 
+Add the SESSION_SECRET variable on the `.env` file
+
+```javascript
+SESSION_SECRET = somesecret;
+```
+
 # Run project
 
 ```bash
